@@ -1,0 +1,230 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGPA CALCULATOR(BDU)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color:  #A1356E ;
+            color: white;
+            padding: 20px;
+        }
+
+        button {
+            background-color: #A1356E ;
+            color: white;
+            padding: 15px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #7E2956;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            padding: 10px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        #sgpaInputs {
+            display: none;
+        }
+
+        .inputContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .inputContainer input {
+            margin: 5px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .submitClearButtons {
+            margin-top: 10px;
+        }
+
+        #sgpaResult {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #A1356E;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            color: #F9EBF2;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="data:image/jpeg;base64,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" alt="Bharadhidasan University Icon" width="50" height="50">
+        <h1>SGPA CALCULATOR(BDU)</h1>
+    </header>
+
+    <button onclick="showSGPACalculator()">SGPA CALCULATION</button>
+    
+
+    <div id="sgpaInputs">
+        <div id="numSubjectsInput" class="inputContainer">
+            <label for="numPart3Subjects">Enter Number of Subjects under Part III:</label>
+            <input type="number" id="numPart3Subjects" name="numPart3Subjects" required>
+            <button onclick="createSubjectInputs()">Submit</button>
+        </div>
+
+        <div id="subjectInputs" class="inputContainer"></div>
+
+        <div id="submitClearButtons" class="submitClearButtons"></div>
+    </div>
+
+    <div id="sgpaResult">SGPA: <span id="resultValue"></span></div>
+
+    <footer>
+        Created and Maintained by: S.N
+    </footer>
+
+    <script>
+        function showSGPACalculator() {
+alert("Please gather the following details to further proceed with SGPA CALCULATION:\n1. Part-3(III) subjects of the semester\n2. Mark statement\n3. Grade point of subjects (Kindly refer to student login in BDU's Official Website).");
+alert("FOR STUDENTS WITH ARREARS: While entering the No. of subjects under part-III enter only the No. of subjects you have cleared.");
+            var sgpaInputsDiv = document.getElementById("sgpaInputs");
+            sgpaInputsDiv.style.display = "block";
+            document.getElementById("sgpaResult").style.display = "none";
+        }
+
+        function showCGPACalculator() {
+            var numPart3Subjects = document.getElementById("numPart3Subjects").value;
+            var subjectInputsDiv = document.getElementById("subjectInputs");
+            var submitClearButtonsDiv = document.getElementById("submitClearButtons");
+
+            subjectInputsDiv.innerHTML = "";
+
+            for (var i = 1; i <= numPart3Subjects; i++) {
+                var label = document.createElement("label");
+                label.textContent = "Subject " + i + " Details:";
+
+                var nameInput = document.createElement("input");
+                nameInput.type = "text";
+                nameInput.name = "subjectName" + i;
+                nameInput.placeholder = "Subject Name or Code"; // Updated placeholder
+
+                var totalMarksInput = document.createElement("input");
+                totalMarksInput.type = "number";
+                totalMarksInput.name = "totalMarks" + i;
+                totalMarksInput.placeholder = "Total Marks out of 100";
+
+                var creditInput = document.createElement("input");
+                creditInput.type = "number";
+                creditInput.name = "credit" + i;
+                creditInput.placeholder = "Credit Points";
+
+                subjectInputsDiv.appendChild(label);
+                subjectInputsDiv.appendChild(nameInput);
+                subjectInputsDiv.appendChild(totalMarksInput);
+                subjectInputsDiv.appendChild(creditInput);
+            }
+
+            var submitButton = document.createElement("button");
+            submitButton.textContent = "Submit";
+            submitButton.onclick = function () {
+                calculateSGPA();
+            };
+
+            var clearButton = document.createElement("button");
+            clearButton.textContent = "Clear";
+            clearButton.onclick = function () {
+                clearAllInputs();
+            };
+
+            submitClearButtonsDiv.innerHTML = "";
+            submitClearButtonsDiv.appendChild(submitButton);
+            submitClearButtonsDiv.appendChild(clearButton);
+        }
+
+        function calculateSGPA() {
+            var subjectInputsDiv = document.getElementById("subjectInputs");
+            var totalMarks = 0;
+            var totalCredits = 0;
+
+            for (var i = 1; i <= subjectInputsDiv.childElementCount / 4; i++) {
+                var totalMarksInput = document.getElementsByName("totalMarks" + i)[0].value;
+                var creditInput = document.getElementsByName("credit" + i)[0].value;
+
+                var score;
+
+                if (totalMarksInput >= 90) {
+                    score = 10;
+                } else if (totalMarksInput >= 80) {
+                    score = 9;
+                } else if (totalMarksInput >= 70) {
+                    score = 8;
+                } else if (totalMarksInput >= 60) {
+                    score = 7;
+                } else if (totalMarksInput >= 50) {
+                    score = 6;
+                } else if (totalMarksInput >= 40) {
+                    score = 5;
+                } else {
+                    score = 0; // Set to 0 for below 40, you can change it to 'NA' if needed
+                }
+
+                totalMarks += score * creditInput;
+                totalCredits += parseFloat(creditInput);
+            }
+
+            var sgpa = totalMarks / totalCredits;
+
+            displaySGPAResult(sgpa);
+        }
+
+        function displaySGPAResult(sgpa) {
+            var resultValue = document.getElementById("resultValue");
+            resultValue.textContent = sgpa.toFixed(2);
+
+            var sgpaResultDiv = document.getElementById("sgpaResult");
+            sgpaResultDiv.style.display = "block";
+        }
+
+        function clearAllInputs() {
+            var subjectInputsDiv = document.getElementById("subjectInputs");
+            var submitClearButtonsDiv = document.getElementById("submitClearButtons");
+
+            subjectInputsDiv.innerHTML = "";
+            submitClearButtonsDiv.innerHTML = "";
+            document.getElementById("sgpaResult").style.display = "none";
+        }
+
+        function createSubjectInputs() {
+            showCGPACalculator();
+        }
+    </script>
+
+
+</body>
+</html>
